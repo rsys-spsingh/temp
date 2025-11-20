@@ -107,8 +107,8 @@ function handle_contact_form_submission() {
     
     wp_mail($admin_email, $subject, $message);
     
-    // Redirect with success message
-    wp_redirect(home_url('/?success=form_submitted'));
+    // Redirect with success message and track conversion
+    wp_redirect(home_url('/?success=form_submitted&course=' . urlencode($course) . '&conversion=1&fname=' . urlencode($first_name) . '&lname=' . urlencode($last_name) . '&email=' . urlencode($email) . '&country=' . urlencode($country_code)));
     exit;
 }
 add_action('admin_post_contact_form_submission', 'handle_contact_form_submission');
@@ -139,15 +139,75 @@ function create_contact_submissions_table() {
 }
 register_activation_hook(__FILE__, 'create_contact_submissions_table');
 
-// Display form messages
+// Display form messages with Google Tag Manager conversion tracking
 function display_form_messages() {
     if (isset($_GET['success']) && $_GET['success'] == 'form_submitted') {
+        $course = isset($_GET['course']) ? esc_html($_GET['course']) : 'Unknown';
+        $conversion = isset($_GET['conversion']) ? $_GET['conversion'] : '';
+        $fname = isset($_GET['fname']) ? esc_html($_GET['fname']) : '';
+        $lname = isset($_GET['lname']) ? esc_html($_GET['lname']) : '';
+        $email = isset($_GET['email']) ? esc_html($_GET['email']) : '';
+        $country = isset($_GET['country']) ? esc_html($_GET['country']) : '';
+        
         echo '<div class="success-message">Thank you! Your application has been submitted successfully. We will contact you soon at the provided email and phone number.</div>';
+        
+        // Add Google Tag Manager conversion tracking
+        if ($conversion == '1') {
+            ?>
+            <script>
+                // Track successful form submission as conversion using GTM dataLayer
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'form_submission_success',
+                    'event_category': 'conversion',
+                    'event_action': 'submit_contact_form',
+                    'event_label': '<?php echo $course; ?>',
+                    'course_name': '<?php echo $course; ?>',
+                    'user_first_name': '<?php echo $fname; ?>',
+                    'user_last_name': '<?php echo $lname; ?>',
+                    'user_email': '<?php echo $email; ?>',
+                    'country_code': '<?php echo $country; ?>',
+                    'conversion_value': 1,
+                    'currency': 'INR',
+                    'timestamp': new Date().toISOString()
+                });
+
+                // Also push conversion event for Google Ads
+                window.dataLayer.push({
+                    'event': 'conversion',
+                    'google_conversion_id': 'AW-17740599737',
+                    'google_conversion_label': 'conversion_label_here', // Replace with your actual conversion label
+                    'google_conversion_value': 1,
+                    'google_conversion_currency': 'INR'
+                });
+
+                // Track as gtag conversion as well (fallback)
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'conversion', {
+                        'send_to': 'AW-17740599737/conversion_label_here', // Replace with your actual conversion label
+                        'event_category': 'conversion',
+                        'event_label': '<?php echo $course; ?>',
+                        'value': 1.0,
+                        'currency': 'INR'
+                    });
+                    
+                    gtag('event', 'generate_lead', {
+                        'event_category': 'conversion',
+                        'event_label': '<?php echo $course; ?>',
+                        'value': 1,
+                        'currency': 'INR'
+                    });
+                }
+            </script>
+            <?php
+        }
     }
     
     if (isset($_GET['error'])) {
         $error_message = '';
-        switch ($_GET['error']) {
+        $error_code = $_GET['error'];
+        
+        switch ($error_code) {
             case 'missing_fields':
                 $error_message = 'Please fill in all required fields including country code.';
                 break;
@@ -167,6 +227,21 @@ function display_form_messages() {
                 $error_message = 'An error occurred. Please try again.';
         }
         echo '<div class="error-alert">' . $error_message . '</div>';
+        
+        // Track form submission errors with GTM
+        ?>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'form_submission_error',
+                'event_category': 'form',
+                'event_action': 'submission_error',
+                'event_label': '<?php echo $error_code; ?>',
+                'error_type': '<?php echo $error_code; ?>',
+                'error_message': '<?php echo esc_js($error_message); ?>'
+            });
+        </script>
+        <?php
     }
 }
 add_action('wp_footer', 'display_form_messages');

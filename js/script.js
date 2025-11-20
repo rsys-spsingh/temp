@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize dataLayer for GTM
+    window.dataLayer = window.dataLayer || [];
+    
+    // GTM Push function
+    function pushToDataLayer(eventName, eventData = {}) {
+        window.dataLayer.push({
+            'event': eventName,
+            ...eventData
+        });
+    }
+
     // Partner Slideshow functionality
     let slideIndex = 0;
     const slides = document.querySelectorAll('.slides');
@@ -111,6 +122,90 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Course Category Filtering
+    const categoryItems = document.querySelectorAll('.category-item');
+    const courseCards = document.querySelectorAll('.course-card');
+
+    function filterCourses(category) {
+        courseCards.forEach(card => {
+            if (category === 'all' || card.classList.contains(category)) {
+                card.classList.remove('hidden');
+                card.style.display = 'block';
+            } else {
+                card.classList.add('hidden');
+                card.style.display = 'none';
+            }
+        });
+
+        // Track category filter events with GTM
+        pushToDataLayer('course_category_filter', {
+            'event_category': 'engagement',
+            'event_action': 'filter_courses',
+            'event_label': category,
+            'course_category': category,
+            'timestamp': new Date().toISOString()
+        });
+    }
+
+    categoryItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Remove active class from all category items
+            categoryItems.forEach(cat => cat.classList.remove('active'));
+            
+            // Add active class to clicked item
+            this.classList.add('active');
+            
+            // Get category and filter courses
+            const category = this.getAttribute('data-category');
+            filterCourses(category);
+        });
+    });
+
+    // Select Course Function (global for onclick handlers)
+    window.selectCourse = function(courseValue) {
+        const courseSelect = document.getElementById('course');
+        if (courseSelect) {
+            courseSelect.value = courseValue;
+            
+            // Track course selection events with GTM
+            pushToDataLayer('course_selection', {
+                'event_category': 'engagement',
+                'event_action': 'select_course',
+                'event_label': courseValue,
+                'course_name': courseValue,
+                'selection_method': 'apply_button',
+                'timestamp': new Date().toISOString()
+            });
+            
+            // Trigger change event to show visual feedback
+            const changeEvent = new Event('change', { bubbles: true });
+            courseSelect.dispatchEvent(changeEvent);
+            
+            // Scroll to form
+            const formSection = document.querySelector('.form-section');
+            if (formSection) {
+                formSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                
+                // Track form focus event
+                pushToDataLayer('form_focus', {
+                    'event_category': 'engagement',
+                    'event_action': 'scroll_to_form',
+                    'event_label': 'course_selection',
+                    'course_name': courseValue
+                });
+                
+                // Highlight the form briefly
+                formSection.style.boxShadow = '0 0 30px rgba(30, 60, 114, 0.3)';
+                setTimeout(() => {
+                    formSection.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+                }, 2000);
+            }
+        }
+    };
+
     // Smooth scrolling for navigation links
     const navLinks = document.querySelectorAll('nav a[href^="#"]');
     
@@ -120,6 +215,15 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
+            
+            // Track navigation clicks with GTM
+            pushToDataLayer('navigation_click', {
+                'event_category': 'navigation',
+                'event_action': 'click_nav_link',
+                'event_label': targetId,
+                'link_text': this.textContent,
+                'target_section': targetId
+            });
             
             if (targetSection) {
                 targetSection.scrollIntoView({
@@ -134,7 +238,21 @@ document.addEventListener('DOMContentLoaded', function() {
     if (form) {
         const inputs = form.querySelectorAll('input[required], select[required]');
         
+        // Track form start
+        let formStarted = false;
         inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                if (!formStarted) {
+                    formStarted = true;
+                    pushToDataLayer('form_start', {
+                        'event_category': 'form',
+                        'event_action': 'start_form',
+                        'event_label': 'contact_form',
+                        'form_id': 'contact-form'
+                    });
+                }
+            });
+            
             input.addEventListener('blur', function() {
                 validateField(this);
             });
@@ -161,12 +279,37 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             if (isValid) {
+                // Get form data for tracking
+                const formData = new FormData(form);
+                const courseValue = formData.get('course');
+                const countryCode = formData.get('country_code');
+                const email = formData.get('email');
+                
+                // Track form submission start with GTM
+                pushToDataLayer('form_submit', {
+                    'event_category': 'form',
+                    'event_action': 'submit_form',
+                    'event_label': 'contact_form',
+                    'course_selected': courseValue,
+                    'country_code': countryCode,
+                    'form_id': 'contact-form',
+                    'user_email': email,
+                    'timestamp': new Date().toISOString()
+                });
+                
                 // Show loading state
                 const submitBtn = form.querySelector('.submit-btn');
                 submitBtn.innerHTML = 'Submitting Application...';
                 submitBtn.disabled = true;
                 submitBtn.classList.add('loading');
             } else {
+                // Track form validation errors with GTM
+                pushToDataLayer('form_error', {
+                    'event_category': 'form',
+                    'event_action': 'validation_error',
+                    'event_label': 'contact_form',
+                    'form_id': 'contact-form'
+                });
                 e.preventDefault();
             }
         });
@@ -274,6 +417,16 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.value) {
                 clearError(this);
                 this.style.borderColor = '#28a745'; // Green border for valid selection
+                
+                // Track manual course selection with GTM
+                pushToDataLayer('manual_course_selection', {
+                    'event_category': 'form',
+                    'event_action': 'select_course_dropdown',
+                    'event_label': this.value,
+                    'course_name': this.value,
+                    'selection_method': 'dropdown'
+                });
+                
                 setTimeout(() => {
                     this.style.borderColor = '#e1e5e9';
                 }, 2000);
@@ -287,6 +440,15 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.value) {
                 clearError(this);
                 this.style.borderColor = '#28a745'; // Green border for valid selection
+                
+                // Track country selection with GTM
+                pushToDataLayer('country_selection', {
+                    'event_category': 'form',
+                    'event_action': 'select_country',
+                    'event_label': this.value,
+                    'country_code': this.value
+                });
+                
                 setTimeout(() => {
                     this.style.borderColor = '#e1e5e9';
                 }, 2000);
@@ -324,6 +486,15 @@ document.addEventListener('DOMContentLoaded', function() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 animateNumbers();
+                
+                // Track when experts section is viewed with GTM
+                pushToDataLayer('section_view', {
+                    'event_category': 'engagement',
+                    'event_action': 'view_section',
+                    'event_label': 'experts_section',
+                    'section_name': 'experts'
+                });
+                
                 observer.unobserve(entry.target);
             }
         });
@@ -338,13 +509,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const floatingButtons = document.querySelectorAll('.floating-btn');
     
     floatingButtons.forEach(btn => {
-        // Add click analytics (optional)
+        // Add click analytics
         btn.addEventListener('click', function(e) {
             const buttonType = this.classList.contains('phone-btn') ? 'phone' : 'whatsapp';
             console.log(`${buttonType} button clicked`);
             
-            // You can add analytics tracking here
-            // gtag('event', 'click', { event_category: 'floating_button', event_label: buttonType });
+            // Track floating button clicks with GTM
+            pushToDataLayer('cta_click', {
+                'event_category': 'cta',
+                'event_action': 'click_floating_button',
+                'event_label': buttonType,
+                'button_type': buttonType,
+                'button_position': 'floating'
+            });
         });
 
         // Enhanced hover effects
@@ -379,4 +556,36 @@ document.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('resize', checkFooterVisibility);
         checkFooterVisibility(); // Initial check
     }
+
+    // Track page load completion with GTM
+    pushToDataLayer('page_load', {
+        'event_category': 'page',
+        'event_action': 'load_complete',
+        'event_label': 'homepage',
+        'page_type': 'landing_page'
+    });
+
+    // Track scroll depth
+    let scrollDepthTracked = {
+        25: false,
+        50: false,
+        75: false,
+        100: false
+    };
+
+    window.addEventListener('scroll', function() {
+        const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+        
+        Object.keys(scrollDepthTracked).forEach(depth => {
+            if (scrollPercent >= depth && !scrollDepthTracked[depth]) {
+                scrollDepthTracked[depth] = true;
+                pushToDataLayer('scroll_depth', {
+                    'event_category': 'engagement',
+                    'event_action': 'scroll',
+                    'event_label': `${depth}_percent`,
+                    'scroll_depth': depth
+                });
+            }
+        });
+    });
 });

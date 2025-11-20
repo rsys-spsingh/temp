@@ -119,6 +119,353 @@
         </div>
     </section>
 
+    <!-- Courses Section -->
+    <section class="courses-section" id="programs">
+        <div class="courses-container">
+            <h2 class="courses-title">Explore Our Programs</h2>
+            <p class="courses-subtitle">Choose from our wide range of courses designed to shape your career</p>
+            
+            <div class="courses-content">
+                <!-- Course Categories Sidebar -->
+                <div class="course-categories">
+                    <div class="category-item active" data-category="all">
+                        <div class="category-icon">🎯</div>
+                        <div class="category-info">
+                            <h3>All Courses</h3>
+                            <p>View all programs</p>
+                        </div>
+                    </div>
+                    
+                    <div class="category-item" data-category="masters">
+                        <div class="category-icon">🎓</div>
+                        <div class="category-info">
+                            <h3>Master's Programs</h3>
+                            <p>Advanced degrees</p>
+                        </div>
+                    </div>
+                    
+                    <div class="category-item" data-category="bachelors">
+                        <div class="category-icon">📚</div>
+                        <div class="category-info">
+                            <h3>Bachelor's Programs</h3>
+                            <p>Undergraduate degrees</p>
+                        </div>
+                    </div>
+                    
+                    <div class="category-item" data-category="integrated">
+                        <div class="category-icon">🔗</div>
+                        <div class="category-info">
+                            <h3>Integrated Programs</h3>
+                            <p>Combined degrees</p>
+                        </div>
+                    </div>
+                    
+                    <div class="category-item" data-category="diploma">
+                        <div class="category-icon">📜</div>
+                        <div class="category-info">
+                            <h3>Diploma & Certification</h3>
+                            <p>Short-term courses</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Cards Grid -->
+                <div class="course-cards-container">
+                    <div class="course-grid" id="course-grid">
+                        
+                        <!-- Master's Programs -->
+                        <div class="course-card masters" data-course="MBA">
+                            <div class="course-header">
+                                <div class="course-badges">
+                                    <span class="badge trending">🔥 Trending</span>
+                                    <span class="badge seats-left">⏰ Few Seats Left</span>
+                                </div>
+                                <h3 class="course-name">MBA</h3>
+                                <p class="course-full-name">Master of Business Administration</p>
+                            </div>
+                            <div class="course-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">⏱️</span>
+                                    <span class="detail-text">Duration: 2 Years</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">💼</span>
+                                    <span class="detail-text">Management & Leadership</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">💰</span>
+                                    <span class="detail-text">High ROI Career</span>
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <button class="apply-btn" onclick="selectCourse('MBA')">Apply Now</button>
+                                <button class="info-btn">More Info</button>
+                            </div>
+                        </div>
+
+                        <div class="course-card masters" data-course="MCA">
+                            <div class="course-header">
+                                <div class="course-badges">
+                                    <span class="badge trending">🔥 Trending</span>
+                                </div>
+                                <h3 class="course-name">MCA</h3>
+                                <p class="course-full-name">Master of Computer Applications</p>
+                            </div>
+                            <div class="course-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">⏱️</span>
+                                    <span class="detail-text">Duration: 2 Years</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">💻</span>
+                                    <span class="detail-text">Software Development</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">🚀</span>
+                                    <span class="detail-text">High Demand Field</span>
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <button class="apply-btn" onclick="selectCourse('MCA')">Apply Now</button>
+                                <button class="info-btn">More Info</button>
+                            </div>
+                        </div>
+
+                        <div class="course-card masters" data-course="MSc-Data-Science">
+                            <div class="course-header">
+                                <div class="course-badges">
+                                    <span class="badge trending">🔥 Trending</span>
+                                    <span class="badge seats-left">⏰ Few Seats Left</span>
+                                </div>
+                                <h3 class="course-name">MSc Data Science</h3>
+                                <p class="course-full-name">Master of Science in Data Science</p>
+                            </div>
+                            <div class="course-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">⏱️</span>
+                                    <span class="detail-text">Duration: 2 Years</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">📊</span>
+                                    <span class="detail-text">Analytics & AI</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">🎯</span>
+                                    <span class="detail-text">Future-Ready Skills</span>
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <button class="apply-btn" onclick="selectCourse('MSc-Data-Science')">Apply Now</button>
+                                <button class="info-btn">More Info</button>
+                            </div>
+                        </div>
+
+                        <!-- Bachelor's Programs -->
+                        <div class="course-card bachelors" data-course="BBA">
+                            <div class="course-header">
+                                <div class="course-badges">
+                                    <span class="badge popular">⭐ Popular</span>
+                                </div>
+                                <h3 class="course-name">BBA</h3>
+                                <p class="course-full-name">Bachelor of Business Administration</p>
+                            </div>
+                            <div class="course-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">⏱️</span>
+                                    <span class="detail-text">Duration: 3 Years</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">💼</span>
+                                    <span class="detail-text">Business Foundation</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">📈</span>
+                                    <span class="detail-text">Career Growth</span>
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <button class="apply-btn" onclick="selectCourse('BBA')">Apply Now</button>
+                                <button class="info-btn">More Info</button>
+                            </div>
+                        </div>
+
+                        <div class="course-card bachelors" data-course="BCA">
+                            <div class="course-header">
+                                <div class="course-badges">
+                                    <span class="badge trending">🔥 Trending</span>
+                                </div>
+                                <h3 class="course-name">BCA</h3>
+                                <p class="course-full-name">Bachelor of Computer Applications</p>
+                            </div>
+                            <div class="course-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">⏱️</span>
+                                    <span class="detail-text">Duration: 3 Years</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">💻</span>
+                                    <span class="detail-text">Programming & IT</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">🌟</span>
+                                    <span class="detail-text">Tech Industry Ready</span>
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <button class="apply-btn" onclick="selectCourse('BCA')">Apply Now</button>
+                                <button class="info-btn">More Info</button>
+                            </div>
+                        </div>
+
+                        <div class="course-card bachelors" data-course="BCom">
+                            <div class="course-header">
+                                <div class="course-badges">
+                                    <span class="badge seats-left">⏰ Few Seats Left</span>
+                                </div>
+                                <h3 class="course-name">B.Com</h3>
+                                <p class="course-full-name">Bachelor of Commerce</p>
+                            </div>
+                            <div class="course-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">⏱️</span>
+                                    <span class="detail-text">Duration: 3 Years</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">💰</span>
+                                    <span class="detail-text">Finance & Commerce</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">📊</span>
+                                    <span class="detail-text">Industry Relevant</span>
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <button class="apply-btn" onclick="selectCourse('BCom')">Apply Now</button>
+                                <button class="info-btn">More Info</button>
+                            </div>
+                        </div>
+
+                        <!-- Integrated Programs -->
+                        <div class="course-card integrated" data-course="BBA-MBA">
+                            <div class="course-header">
+                                <div class="course-badges">
+                                    <span class="badge trending">🔥 Trending</span>
+                                    <span class="badge seats-left">⏰ Few Seats Left</span>
+                                </div>
+                                <h3 class="course-name">BBA + MBA</h3>
+                                <p class="course-full-name">Integrated Business Program</p>
+                            </div>
+                            <div class="course-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">⏱️</span>
+                                    <span class="detail-text">Duration: 5 Years</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">🎯</span>
+                                    <span class="detail-text">Dual Degree</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">⚡</span>
+                                    <span class="detail-text">Fast Track Career</span>
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <button class="apply-btn" onclick="selectCourse('BBA-MBA')">Apply Now</button>
+                                <button class="info-btn">More Info</button>
+                            </div>
+                        </div>
+
+                        <div class="course-card integrated" data-course="BCA-MCA">
+                            <div class="course-header">
+                                <div class="course-badges">
+                                    <span class="badge popular">⭐ Popular</span>
+                                </div>
+                                <h3 class="course-name">BCA + MCA</h3>
+                                <p class="course-full-name">Integrated Tech Program</p>
+                            </div>
+                            <div class="course-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">⏱️</span>
+                                    <span class="detail-text">Duration: 5 Years</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">💻</span>
+                                    <span class="detail-text">Advanced Computing</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">🚀</span>
+                                    <span class="detail-text">Tech Leadership</span>
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <button class="apply-btn" onclick="selectCourse('BCA-MCA')">Apply Now</button>
+                                <button class="info-btn">More Info</button>
+                            </div>
+                        </div>
+
+                        <!-- Diploma Programs -->
+                        <div class="course-card diploma" data-course="Cert-6Months">
+                            <div class="course-header">
+                                <div class="course-badges">
+                                    <span class="badge quick">⚡ Quick Start</span>
+                                </div>
+                                <h3 class="course-name">Certificate Program</h3>
+                                <p class="course-full-name">6 Months Certification</p>
+                            </div>
+                            <div class="course-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">⏱️</span>
+                                    <span class="detail-text">Duration: 6 Months</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">📜</span>
+                                    <span class="detail-text">Industry Certificate</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">🎯</span>
+                                    <span class="detail-text">Skill Enhancement</span>
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <button class="apply-btn" onclick="selectCourse('Cert-6Months')">Apply Now</button>
+                                <button class="info-btn">More Info</button>
+                            </div>
+                        </div>
+
+                        <div class="course-card diploma" data-course="Diploma-1Year">
+                            <div class="course-header">
+                                <div class="course-badges">
+                                    <span class="badge seats-left">⏰ Few Seats Left</span>
+                                </div>
+                                <h3 class="course-name">Diploma Program</h3>
+                                <p class="course-full-name">1 Year Professional Diploma</p>
+                            </div>
+                            <div class="course-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">⏱️</span>
+                                    <span class="detail-text">Duration: 1 Year</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">🏆</span>
+                                    <span class="detail-text">Professional Level</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">💼</span>
+                                    <span class="detail-text">Career Focused</span>
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <button class="apply-btn" onclick="selectCourse('Diploma-1Year')">Apply Now</button>
+                                <button class="info-btn">More Info</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Partners Section -->
     <section class="partners-section">
         <h2 class="partners-title">Our Partners</h2>
